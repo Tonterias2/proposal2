@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.spingular.proposal"
+    },
+    "jhipsterVersion": "6.1.2",
+    "applicationType": "monolith",
+    "baseName": "spingularproposal",
+    "packageName": "com.spingular.proposal",
+    "packageFolder": "com/spingular/proposal",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NzQwNWZkMjM5MjIyYmFhNDRmZjc3NjJiZmRiZjEwNGY2YjMzMjZjYTQzOThhMjY0OWEzZGNjZDVkMTFkNGE0ODJiNjQ4MWJlNDc0ZWY0NDczYmZlMDNiNTM0NDkxMGJmMDdlODgzMmQyZmYwYTZhM2VlMzZhYTIzZWMzNGUwZmQ=",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false
+  }
+}
