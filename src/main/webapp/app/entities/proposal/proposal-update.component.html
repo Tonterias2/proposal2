@@ -1,0 +1,119 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-proposal-heading">Create or edit a Proposal</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_creationDate">Creation Date</label>
+                    <div class="d-flex">
+                        <input id="field_creationDate" type="datetime-local" class="form-control" name="creationDate" formControlName="creationDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('creationDate').invalid && (editForm.get('creationDate').dirty || editForm.get('creationDate').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('creationDate').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('creationDate').errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalName">Proposal Name</label>
+                    <input type="text" class="form-control" name="proposalName" id="field_proposalName"
+                           formControlName="proposalName"/>
+                    <div *ngIf="editForm.get('proposalName').invalid && (editForm.get('proposalName').dirty || editForm.get('proposalName').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('proposalName').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('proposalName').errors.minlength">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('proposalName').errors.maxlength">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalType">Proposal Type</label>
+                    <select class="form-control" name="proposalType" formControlName="proposalType" id="field_proposalType">
+                        <option value="STUDY">STUDY</option>
+                        <option value="APPROVED">APPROVED</option>
+                        <option value="DEVELOPMENT">DEVELOPMENT</option>
+                        <option value="PRODUCTION">PRODUCTION</option>
+                    </select>
+                    <div *ngIf="editForm.get('proposalType').invalid && (editForm.get('proposalType').dirty || editForm.get('proposalType').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('proposalType').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalRole">Proposal Role</label>
+                    <select class="form-control" name="proposalRole" formControlName="proposalRole" id="field_proposalRole">
+                        <option value="USER">USER</option>
+                        <option value="ORGANIZER">ORGANIZER</option>
+                        <option value="MANAGER">MANAGER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                    <div *ngIf="editForm.get('proposalRole').invalid && (editForm.get('proposalRole').dirty || editForm.get('proposalRole').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('proposalRole').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_releaseDate">Release Date</label>
+                    <div class="d-flex">
+                        <input id="field_releaseDate" type="datetime-local" class="form-control" name="releaseDate" formControlName="releaseDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalVotes">Proposal Votes</label>
+                    <input type="number" class="form-control" name="proposalVotes" id="field_proposalVotes"
+                           formControlName="proposalVotes"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalUserVotes">Proposal User Votes</label>
+                    <input type="number" class="form-control" name="proposalUserVotes" id="field_proposalUserVotes"
+                           formControlName="proposalUserVotes"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proposalUser">Proposal User</label>
+                    <select class="form-control" id="field_proposalUser" name="proposalUser" formControlName="proposalUserId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="proposalUserOption.id" *ngFor="let proposalUserOption of proposalusers; trackBy: trackProposalUserById">{{proposalUserOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_post">Post</label>
+                    <select class="form-control" id="field_post" name="post" formControlName="postId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="postOption.id" *ngFor="let postOption of posts; trackBy: trackPostById">{{postOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

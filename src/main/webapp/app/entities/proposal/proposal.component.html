@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span>Proposals</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-proposal" [routerLink]="['/proposal/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Proposal
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="proposals?.length === 0">
+        <span>No proposals found</span>
+    </div>
+    <div class="table-responsive" *ngIf="proposals?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="creationDate"><span>Creation Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalName"><span>Proposal Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalType"><span>Proposal Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalRole"><span>Proposal Role</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="releaseDate"><span>Release Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalVotes"><span>Proposal Votes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalUserVotes"><span>Proposal User Votes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalUserId"><span>Proposal User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="postId"><span>Post</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let proposal of proposals ;trackBy: trackId">
+                <td><a [routerLink]="['/proposal', proposal.id, 'view' ]">{{proposal.id}}</a></td>
+                <td>{{proposal.creationDate | date:'medium'}}</td>
+                <td>{{proposal.proposalName}}</td>
+                <td>{{proposal.proposalType}}</td>
+                <td>{{proposal.proposalRole}}</td>
+                <td>{{proposal.releaseDate | date:'medium'}}</td>
+                <td>{{proposal.proposalVotes}}</td>
+                <td>{{proposal.proposalUserVotes}}</td>
+                <td>
+                    <div *ngIf="proposal.proposalUserId">
+                        <a [routerLink]="['../proposal-user', proposal.proposalUserId , 'view' ]" >{{proposal.proposalUserId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="proposal.postId">
+                        <a [routerLink]="['../post', proposal.postId , 'view' ]" >{{proposal.postId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/proposal', proposal.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/proposal', proposal.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'proposal', { outlets: { popup: proposal.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

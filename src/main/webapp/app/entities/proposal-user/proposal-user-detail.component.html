@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="proposalUser">
+            <h2><span>Proposal User</span> {{proposalUser.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Creation Date</span></dt>
+                <dd>
+                    <span>{{proposalUser.creationDate}}</span>
+                </dd>
+                <dt><span>Assigned Votes Points</span></dt>
+                <dd>
+                    <span>{{proposalUser.assignedVotesPoints}}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{proposalUser.userId}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/proposal-user', proposalUser.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

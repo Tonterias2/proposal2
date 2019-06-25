@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span>Vote Proposals</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vote-proposal" [routerLink]="['/vote-proposal/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Vote Proposal
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="voteProposals?.length === 0">
+        <span>No voteProposals found</span>
+    </div>
+    <div class="table-responsive" *ngIf="voteProposals?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="creationDate"><span>Creation Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="votePoints"><span>Vote Points</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalId"><span>Proposal</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proposalUserId"><span>Proposal User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let voteProposal of voteProposals ;trackBy: trackId">
+                <td><a [routerLink]="['/vote-proposal', voteProposal.id, 'view' ]">{{voteProposal.id}}</a></td>
+                <td>{{voteProposal.creationDate | date:'medium'}}</td>
+                <td>{{voteProposal.votePoints}}</td>
+                <td>
+                    <div *ngIf="voteProposal.proposalId">
+                        <a [routerLink]="['../proposal', voteProposal.proposalId , 'view' ]" >{{voteProposal.proposalId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="voteProposal.proposalUserId">
+                        <a [routerLink]="['../proposal-user', voteProposal.proposalUserId , 'view' ]" >{{voteProposal.proposalUserId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/vote-proposal', voteProposal.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/vote-proposal', voteProposal.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'vote-proposal', { outlets: { popup: voteProposal.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
