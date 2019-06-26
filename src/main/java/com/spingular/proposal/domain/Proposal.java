@@ -52,10 +52,12 @@ public class Proposal implements Serializable {
     @Column(name = "release_date")
     private Instant releaseDate;
 
-    @Column(name = "proposal_votes")
+//    @Column(name = "proposal_votes")
+    @Transient
     private Long proposalVotes;
 
-    @Column(name = "proposal_user_votes")
+//    @Column(name = "proposal_user_votes")
+    @Transient
     private Long proposalUserVotes;
 
     @OneToMany(mappedBy = "proposal")

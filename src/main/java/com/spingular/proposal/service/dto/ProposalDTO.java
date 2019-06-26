@@ -32,7 +32,6 @@ public class ProposalDTO implements Serializable {
 
     private Long proposalUserVotes;
 
-
     private Long proposalUserId;
 
     private Long postId;

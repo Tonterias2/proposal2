@@ -42,6 +42,9 @@ public class ProposalUserServiceImpl implements ProposalUserService {
     @Override
     public ProposalUserDTO save(ProposalUserDTO proposalUserDTO) {
         log.debug("Request to save ProposalUser : {}", proposalUserDTO);
+        if (proposalUserDTO.getAssignedVotesPoints().equals(null)) {
+        	proposalUserDTO.setAssignedVotesPoints(100L);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
         ProposalUser proposalUser = proposalUserMapper.toEntity(proposalUserDTO);
         proposalUser = proposalUserRepository.save(proposalUser);
         return proposalUserMapper.toDto(proposalUser);

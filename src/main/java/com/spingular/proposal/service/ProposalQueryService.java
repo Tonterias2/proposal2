@@ -106,12 +106,12 @@ public class ProposalQueryService extends QueryService<Proposal> {
             if (criteria.getReleaseDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getReleaseDate(), Proposal_.releaseDate));
             }
-            if (criteria.getProposalVotes() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getProposalVotes(), Proposal_.proposalVotes));
-            }
-            if (criteria.getProposalUserVotes() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getProposalUserVotes(), Proposal_.proposalUserVotes));
-            }
+//            if (criteria.getProposalVotes() != null) {
+//                specification = specification.and(buildRangeSpecification(criteria.getProposalVotes(), Proposal_.proposalVotes));
+//            }
+//            if (criteria.getProposalUserVotes() != null) {
+//                specification = specification.and(buildRangeSpecification(criteria.getProposalUserVotes(), Proposal_.proposalUserVotes));
+//            }
             if (criteria.getVoteProposalId() != null) {
                 specification = specification.and(buildSpecification(criteria.getVoteProposalId(),
                     root -> root.join(Proposal_.voteProposals, JoinType.LEFT).get(VoteProposal_.id)));
