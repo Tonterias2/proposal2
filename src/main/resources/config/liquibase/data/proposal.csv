@@ -1,0 +1,11 @@
+id;creation_date;proposal_name;proposal_type;proposal_role;release_date;is_open;is_accepted;is_paid
+1;2019-06-27T10:58:17;cross-platform access;APPROVED;MANAGER;2019-06-28T07:13:03;true;false;true
+2;2019-06-28T09:19:16;Regional;STUDY;MANAGER;2019-06-28T05:42:36;false;true;true
+3;2019-06-27T15:32:36;Markets Chief;PRODUCTION;USER;2019-06-28T00:49:06;true;false;true
+4;2019-06-27T14:15:25;compelling mission-critical;APPROVED;ORGANIZER;2019-06-27T10:27:41;false;true;false
+5;2019-06-28T05:22:38;Books;DEVELOPMENT;ADMIN;2019-06-27T13:25:56;true;true;false
+6;2019-06-28T02:12:18;Fantastic Plastic Chicken;DEVELOPMENT;ORGANIZER;2019-06-27T22:48:48;false;false;true
+7;2019-06-27T17:01:43;synthesize Idaho compress;PRODUCTION;USER;2019-06-27T18:52:22;false;false;true
+8;2019-06-27T21:56:27;Corporate Phased relationships;APPROVED;ORGANIZER;2019-06-27T18:56:42;false;true;false
+9;2019-06-27T14:51:31;maroon;PRODUCTION;ADMIN;2019-06-28T04:40:34;true;false;false
+10;2019-06-27T14:30:51;SQL Games;DEVELOPMENT;MANAGER;2019-06-28T02:23:23;false;true;true

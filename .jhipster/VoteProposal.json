@@ -1,0 +1,44 @@
+{
+    "name": "VoteProposal",
+    "fields": [
+        {
+            "fieldName": "creationDate",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "votePoints",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "proposal",
+            "otherEntityRelationshipName": "voteProposal",
+            "relationshipName": "proposal",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "proposalUser",
+            "otherEntityRelationshipName": "voteProposal",
+            "relationshipName": "proposalUser",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190628100833",
+    "entityTableName": "vote_proposal",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
