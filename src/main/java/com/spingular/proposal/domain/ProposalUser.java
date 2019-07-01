@@ -31,7 +31,6 @@ public class ProposalUser implements Serializable {
 
     @Column(name = "assigned_votes_points")
     private Long assignedVotesPoints;
-//    private Long assignedVotesPoints = 100L;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -77,6 +76,7 @@ public class ProposalUser implements Serializable {
     }
 
     public void setAssignedVotesPoints(Long assignedVotesPoints) {
+    	assignedVotesPoints = 100L;
         this.assignedVotesPoints = assignedVotesPoints;
     }
 

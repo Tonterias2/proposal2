@@ -25,9 +25,12 @@ export class VoteProposalUpdateComponent implements OnInit {
   isSaving: boolean;
 
   proposals: IProposal[];
+  proposal: IProposal;
 
   proposalusers: IProposalUser[];
   proposaluser: IProposalUser;
+
+  voteProposals: IVoteProposal[];
 
   error: any;
   success: any;
@@ -47,6 +50,10 @@ export class VoteProposalUpdateComponent implements OnInit {
   nameParamFollows: any;
   valueParamFollows: any;
   userQuery: boolean;
+
+  totalProposalVotes: number;
+  userProposalVotes: number;
+  userAvailableProposalVotes: number;
 
   editForm = this.fb.group({
     id: [],
@@ -79,7 +86,7 @@ export class VoteProposalUpdateComponent implements OnInit {
     this.accountService.identity().then(account => {
       this.currentAccount = account;
       //        console.log('CONSOLOG: M:ngOnInit & O: account : ', account);
-      //        console.log('CONSOLOG: M:ngOnInit & O: this.currentAccount : ', this.currentAccount);
+      //              console.log('CONSOLOG: M:ngOnInit & O: this.currentAccount : ', this.currentAccount);
       //        this.owner = account.id;
       this.isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
       const query = {};
@@ -88,9 +95,57 @@ export class VoteProposalUpdateComponent implements OnInit {
       this.proposalUserService.query(query).subscribe(
         (res: HttpResponse<IProposalUser[]>) => {
           this.proposaluser = res.body[0];
-          console.log('CONSOLOG: M:ngOnInit & O: this.proposaluser : ', this.proposaluser);
+          //          console.log('CONSOLOG: M:ngOnInit & O: this.proposaluser : ', this.proposaluser);
         },
         (res: HttpErrorResponse) => this.onError(res.message)
+      );
+      const query4 = {};
+      query['id.equals'] = this.valueParamFollows;
+      console.log('CONSOLOG: M:ngOnInit & O: query4 : ', query4);
+      this.proposalService.query(query4).subscribe(
+        (res4: HttpResponse<IProposal[]>) => {
+          this.proposal = res4.body[0];
+          console.log('CONSOLOG: M:ngOnInit & O: this.proposal : ', this.proposal);
+        },
+        (res4: HttpErrorResponse) => this.onError(res4.message)
+      );
+      const query2 = {};
+      query2['proposalId.equals'] = this.valueParamFollows;
+      //      console.log('CONSOLOG: M:ngOnInit & O: query2 : ', query2);
+      this.voteProposalService.query(query2).subscribe(
+        (res2: HttpResponse<IVoteProposal[]>) => {
+          this.voteProposals = [];
+          this.voteProposals = res2.body;
+          //          console.log('CONSOLOG: M:ngOnInit & O: this.voteProposals : ', this.voteProposals);
+          this.totalProposalVotes = 0;
+          this.userProposalVotes = 0;
+          this.voteProposals.forEach(voteProposal => {
+            this.totalProposalVotes = this.totalProposalVotes + voteProposal.votePoints;
+            //              console.log('CONSOLOG: M:ngOnInit & O: this.totalProposalVotes : ', this.totalProposalVotes);
+            if (voteProposal.proposalUserId === this.proposaluser.userId) {
+              this.userProposalVotes = this.userProposalVotes + voteProposal.votePoints;
+              //                  console.log('CONSOLOG: M:ngOnInit & O: this.userProposalVotes : ', this.userProposalVotes);
+            }
+          });
+        },
+        (res2: HttpErrorResponse) => this.onError(res2.message)
+      );
+      const query3 = {};
+      query3['proposalUserId.equals'] = this.currentAccount.id;
+      //      console.log('CONSOLOG: M:ngOnInit & O: query3 : ', query3);
+      this.voteProposalService.query(query3).subscribe(
+        (res3: HttpResponse<IVoteProposal[]>) => {
+          this.voteProposals = [];
+          this.voteProposals = res3.body;
+          //          console.log('CONSOLOG: M:ngOnInit & O: this.voteProposals : ', this.voteProposals);
+          this.userAvailableProposalVotes = this.proposaluser.assignedVotesPoints;
+          this.voteProposals.forEach(voteProposal => {
+            //              console.log('CONSOLOG: M:ngOnInit & O: this.proposaluser.assignedVotesPoints : ', this.proposaluser.assignedVotesPoints);
+            this.userAvailableProposalVotes = this.userAvailableProposalVotes - voteProposal.votePoints;
+            //              console.log('CONSOLOG: M:ngOnInit & O: this.userAvailableProposalVotes : ', this.userAvailableProposalVotes);
+          });
+        },
+        (res3: HttpErrorResponse) => this.onError(res3.message)
       );
     });
     this.activatedRoute.data.subscribe(({ voteProposal }) => {

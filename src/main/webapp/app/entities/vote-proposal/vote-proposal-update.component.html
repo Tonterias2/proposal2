@@ -1,7 +1,18 @@
 <div class="row justify-content-center">
     <div class="col-8">
+        <div>
+        	<h4>
+	            <p><label>Assigned User Points:</label>{{proposaluser.assignedVotesPoints}}</p>
+	            <p><label>Proposal Votes Points:</label>{{totalProposalVotes}}</p>
+	            <p><label>User Proposal Votes Points:</label>{{userProposalVotes}}</p>
+	            <p><label>User Available Proposal Points:</label>{{userAvailableProposalVotes}}</p>
+	            <!-- NECESITO RESTAR LOS PUNTOS ASIGNADOS A LOS VOTOS DE QUE DISPONE y poner el limite en la diferencia.
+	            <label class="form-control-label" for="assignedVotesPoints">Votes Points Left:</label>{{proposaluser.assignedVotesPoints}} - 'votePoints'  
+	            -->
+            </h4>
+        </div>
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-vote-proposal-heading">Create or edit a Vote Proposal</h2>
+            <h2 id="jhi-vote-proposal-heading">Create or edit a Vote Proposal : {{proposal.proposalName}}</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!editForm.get('id').value">
