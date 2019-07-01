@@ -59,19 +59,6 @@ export class ProposalComponent implements OnInit, OnDestroy {
     });
   }
 
-  //  loadAll() {
-  //    this.proposalService
-  //      .query({
-  //        page: this.page - 1,
-  //        size: this.itemsPerPage,
-  //        sort: this.sort()
-  //      })
-  //      .subscribe(
-  //        (res: HttpResponse<IProposal[]>) => this.paginateProposals(res.body, res.headers),
-  //        (res: HttpErrorResponse) => this.onError(res.message)
-  //      );
-  //  }
-
   loadAll() {
     this.proposalService
       .query({
@@ -82,7 +69,7 @@ export class ProposalComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: HttpResponse<IProposal[]>) => {
           this.proposals = res.body;
-          console.log('CONSOLOG: M:loadAll & O: this.proposals : ', this.proposals);
+          //          console.log('CONSOLOG: M:loadAll & O: this.proposals : ', this.proposals);
           this.proposals.forEach(proposal => {
             const query2 = {};
             query2['proposalId.equals'] = proposal.id;
@@ -91,15 +78,15 @@ export class ProposalComponent implements OnInit, OnDestroy {
             this.voteProposalService.query(query2).subscribe(
               (res2: HttpResponse<IVoteProposal[]>) => {
                 this.voteProposals = res2.body;
-                console.log('CONSOLOG: M:loadAll & O: voteProposals : ', this.voteProposals);
+                //                console.log('CONSOLOG: M:loadAll & O: voteProposals : ', this.voteProposals);
                 if (this.voteProposals != null) {
                   const arrayVoteProposals = [];
                   this.voteProposals.forEach(voteProposal => {
-                    console.log('CONSOLOG: M:loadAll & O: arrayVoteProposals : ', arrayVoteProposals);
+                    //                    console.log('CONSOLOG: M:loadAll & O: arrayVoteProposals : ', arrayVoteProposals);
                     arrayVoteProposals.push(voteProposal.votePoints);
                   });
                 }
-                console.log('CONSOLOG: M:loadAll & O: this.voteProposals : ', this.voteProposals);
+                //                console.log('CONSOLOG: M:loadAll & O: this.voteProposals : ', this.voteProposals);
               },
               (res2: HttpErrorResponse) => this.onError(res2.message)
             );
@@ -110,7 +97,6 @@ export class ProposalComponent implements OnInit, OnDestroy {
   }
 
   myProposals() {
-    console.log('CONSOLOG: M:myProposals & DENTRO');
     const query = {};
     if (this.currentAccount.id != null) {
       query['proposalUserId.equals'] = this.proposalUser.id;
@@ -120,7 +106,7 @@ export class ProposalComponent implements OnInit, OnDestroy {
       //        (res: HttpResponse<IChatRoom[]>) => this.paginateChatRooms(res.body, res.headers),
       (res: HttpResponse<IProposal[]>) => {
         this.paginateProposals(res.body, res.headers);
-        console.log('CONSOLOG: M:myProposals & O: query : ', query);
+        //        console.log('CONSOLOG: M:myProposals & O: query : ', query);
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );

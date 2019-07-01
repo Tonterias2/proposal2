@@ -1,5 +1,5 @@
 <div>
-    <h2 id="page-heading">
+    <!-- <h2 id="page-heading">
         <span>Vote Proposals</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vote-proposal" [routerLink]="['/vote-proposal/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
@@ -7,7 +7,7 @@
             Create new Vote Proposal
             </span>
         </button>
-    </h2>
+    </h2> -->
     <jhi-alert></jhi-alert>
     <br/>
     <div class="alert alert-warning" *ngIf="voteProposals?.length === 0">
@@ -42,7 +42,7 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
-                        <button type="submit"
+                        <!-- <button type="submit"
                                 [routerLink]="['/vote-proposal', voteProposal.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
@@ -53,7 +53,7 @@
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
-                        </button>
+                        </button> -->
                         <button type="submit"
                                 [routerLink]="['/', 'vote-proposal', { outlets: { popup: voteProposal.id + '/delete'} }]"
                                 replaceUrl="true"
