@@ -1,0 +1,72 @@
+
+// ENTITIES:
+entity Post {
+	creationDate Instant required,
+	postName String minlength(2) maxlength(250) required,
+}
+
+entity Proposal {
+	creationDate Instant required,
+	proposalName String minlength(2) maxlength(250) required,
+    proposalType ProposalType required,
+    proposalRole ProposalRole required,
+	releaseDate Instant,
+    isOpen Boolean,
+    isAccepted Boolean,
+    isPaid Boolean
+}
+
+entity VoteProposal {
+	creationDate Instant required,
+	votePoints Long required
+}
+
+entity Profile {
+	creationDate Instant required,
+	assignedVotesPoints Long
+}
+
+// ENUMS:
+enum ProposalType {
+    STUDY, APPROVED, DEVELOPMENT, PRODUCTION
+}
+
+enum ProposalRole {
+    USER, ORGANIZER, MANAGER, ADMIN   
+}
+
+// RELATIONSHIPS:
+relationship OneToOne {
+    Profile{user(id)} to User{profile(id)}
+}
+
+relationship OneToMany {
+	Profile{proposal(id)} to Proposal{profile(id)}
+    Proposal{voteProposal(id)} to VoteProposal{proposal(id)}
+    Profile{voteProposal(id)} to VoteProposal{profile(id)}
+    Post{proposal(id)} to Proposal{post(id)}
+}
+
+// relationship ManyToMany {
+// }
+
+// relationship ManyToOne {
+// 	ChatNotification{chatUser(id)} to ChatUser{chatNotification(id)}
+// }
+
+// Set pagination options
+// paginate all with infinite-scroll
+paginate all with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl // except , 
+
+// FILTERING:
+filter *
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+

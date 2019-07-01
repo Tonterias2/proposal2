@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="voteProposal">
+            <h2><span>Vote Proposal</span> {{voteProposal.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Creation Date</span></dt>
+                <dd>
+                    <span>{{voteProposal.creationDate}}</span>
+                </dd>
+                <dt><span>Vote Points</span></dt>
+                <dd>
+                    <span>{{voteProposal.votePoints}}</span>
+                </dd>
+                <dt><span>Proposal</span></dt>
+                <dd>
+                    <div *ngIf="voteProposal.proposalId">
+                        <a [routerLink]="['/proposal', voteProposal.proposalId, 'view']">{{voteProposal.proposalId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Profile</span></dt>
+                <dd>
+                    <div *ngIf="voteProposal.profileId">
+                        <a [routerLink]="['/profile', voteProposal.profileId, 'view']">{{voteProposal.profileId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vote-proposal', voteProposal.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
