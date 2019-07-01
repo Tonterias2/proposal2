@@ -43,6 +43,14 @@ public class CacheConfiguration {
             createCache(cm, com.spingular.proposal.domain.User.class.getName());
             createCache(cm, com.spingular.proposal.domain.Authority.class.getName());
             createCache(cm, com.spingular.proposal.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.spingular.proposal.domain.Post.class.getName());
+            createCache(cm, com.spingular.proposal.domain.Post.class.getName() + ".proposals");
+            createCache(cm, com.spingular.proposal.domain.Proposal.class.getName());
+            createCache(cm, com.spingular.proposal.domain.Proposal.class.getName() + ".voteProposals");
+            createCache(cm, com.spingular.proposal.domain.VoteProposal.class.getName());
+            createCache(cm, com.spingular.proposal.domain.Profile.class.getName());
+            createCache(cm, com.spingular.proposal.domain.Profile.class.getName() + ".proposals");
+            createCache(cm, com.spingular.proposal.domain.Profile.class.getName() + ".voteProposals");
             // jhipster-needle-ehcache-add-entry
         };
     }

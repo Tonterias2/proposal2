@@ -4,6 +4,22 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
+      {
+        path: 'post',
+        loadChildren: './post/post.module#SpingularproposalPostModule'
+      },
+      {
+        path: 'proposal',
+        loadChildren: './proposal/proposal.module#SpingularproposalProposalModule'
+      },
+      {
+        path: 'vote-proposal',
+        loadChildren: './vote-proposal/vote-proposal.module#SpingularproposalVoteProposalModule'
+      },
+      {
+        path: 'profile',
+        loadChildren: './profile/profile.module#SpingularproposalProfileModule'
+      }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
   ],
