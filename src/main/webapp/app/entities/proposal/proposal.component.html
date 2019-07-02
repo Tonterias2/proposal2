@@ -1,12 +1,63 @@
 <div>
     <h2 id="page-heading">
-        <span>Proposals</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-proposal" [routerLink]="['/proposal/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create new Proposal
-            </span>
-        </button>
+       <table style="width:100%">
+		  <tr>
+        	<span>Proposals</span> <!--  NO ESTA INTERNACIONALIZADO NI TRADUCIDO MAAAAAAAAAAAL -->
+		  </tr>
+		  <tr>
+		    <td>
+   		        <button id="jh-my-entity" class="btn btn-primary float-left jh-create-entity create-chat-room" (click)="myProposals()">
+		            <fa-icon [icon]="'plus'"></fa-icon>
+		            <span>
+		            My Proposals
+		            </span>
+		        </button>
+			</td>
+		    <td>
+		        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-proposal" [routerLink]="['/proposal/new']">
+		            <fa-icon [icon]="'plus'"></fa-icon>
+		            <span >
+		            Create new Proposal
+		            </span>
+		        </button>
+			</td> 
+		  </tr>
+		</table>
+		<table style="width:100%">
+		  <tr>
+        	<span>Filter Proposals by Type</span> <!--  NO ESTA INTERNACIONALIZADO NI TRADUCIDO MAAAAAAAAAAAL -->
+		  </tr>
+		  <tr>
+		    <td>
+   		        <button id="jh-my-entity" class="btn btn-primary float-left jh-create-entity create-chat-room" (click)="study()">
+		            <span>
+		            Study
+		            </span>
+		        </button>
+			</td>
+		    <td>
+   		        <button id="jh-my-entity" class="btn btn-primary float-left jh-create-entity create-chat-room" (click)="approved()">
+		            <span>
+		            Approved
+		            </span>
+		        </button>
+			</td>
+			<td>
+   		        <button id="jh-my-entity" class="btn btn-primary float-left jh-create-entity create-chat-room" (click)="development()">
+		            <span>
+		            Development
+		            </span>
+		        </button>
+			</td> 
+			<td>
+   		        <button id="jh-my-entity" class="btn btn-primary float-left jh-create-entity create-chat-room" (click)="production()">
+		            <span>
+		            Production
+		            </span>
+		        </button>
+			</td>
+		  </tr>
+		</table>
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
