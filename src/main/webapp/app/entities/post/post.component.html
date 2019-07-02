@@ -30,6 +30,9 @@
                 <td>{{post.postName}}</td>
                 <td class="text-right">
                     <div class="btn-group">
+                    	<a [routerLink]="['/proposal/new']" [queryParams]="{ 'postIdEquals': post.id }" class="list-group-item list-group-item-action justify-content-between">
+						  <span><i class="icon-notebook g-pos-rel g-top-1 g-mr-8"></i> Create Proposal</span>
+						</a>
                         <button type="submit"
                                 [routerLink]="['/post', post.id, 'view' ]"
                                 class="btn btn-info btn-sm">

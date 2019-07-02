@@ -29,6 +29,9 @@ export class ProposalUpdateComponent implements OnInit {
   posts: IPost[];
 
   account: any;
+  nameParamFollows: any;
+  valueParamFollows: any;
+  userQuery: boolean;
 
   editForm = this.fb.group({
     id: [],
@@ -52,7 +55,15 @@ export class ProposalUpdateComponent implements OnInit {
     protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.postIdEquals != null) {
+        this.nameParamFollows = 'postId.equals';
+        this.valueParamFollows = params.postIdEquals;
+        this.userQuery = true;
+      }
+    });
+  }
 
   ngOnInit() {
     this.isSaving = false;
@@ -79,13 +90,23 @@ export class ProposalUpdateComponent implements OnInit {
         map((response: HttpResponse<IProposalUser[]>) => response.body)
       )
       .subscribe((res: IProposalUser[]) => (this.proposalusers = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.postService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IPost[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IPost[]>) => response.body)
-      )
-      .subscribe((res: IPost[]) => (this.posts = res), (res: HttpErrorResponse) => this.onError(res.message));
+    //    const query2 = {};
+    //    query2['id.equals'] = this.valueParamFollows;
+    //    console.log('CONSOLOG: M:ngOnInit & O: query2 : ', query2);
+    //    this.postService.query(query2).subscribe(
+    //      (res2: HttpResponse<IPost[]>) => {
+    //        this.posts = res2.body;
+    //        console.log('CONSOLOG: M:ngOnInit & O: this.posts : ', this.posts);
+    //      },
+    //      (res2: HttpErrorResponse) => this.onError(res2.message)
+    //    );
+    //    this.postService
+    //      .query()
+    //      .pipe(
+    //        filter((mayBeOk: HttpResponse<IPost[]>) => mayBeOk.ok),
+    //        map((response: HttpResponse<IPost[]>) => response.body)
+    //      )
+    //      .subscribe((res: IPost[]) => (this.posts = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(proposal: IProposal) {
@@ -120,10 +141,16 @@ export class ProposalUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const proposal = this.createFromForm();
+    //    const study = 'STUDY';
     if (proposal.id !== undefined) {
       this.subscribeToSaveResponse(this.proposalService.update(proposal));
     } else {
+      //      proposal.proposalType = study;
+      //      proposal.proposalRole = proposal.proposalRole.USER;
+      //        proposal.proposalRole = ProposalRole.USER;
+      //        proposal.proposalRole = proposalRole.USER;
       proposal.proposalUserId = this.proposaluser.id;
+      proposal.postId = this.valueParamFollows;
       this.subscribeToSaveResponse(this.proposalService.create(proposal));
     }
   }
