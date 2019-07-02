@@ -14,6 +14,8 @@ import { ProfileService } from 'app/entities/profile';
 import { IPost } from 'app/shared/model/post.model';
 import { PostService } from 'app/entities/post';
 
+import { AccountService } from 'app/core';
+
 @Component({
   selector: 'jhi-proposal-update',
   templateUrl: './proposal-update.component.html'
@@ -50,6 +52,7 @@ export class ProposalUpdateComponent implements OnInit {
     protected proposalService: ProposalService,
     protected profileService: ProfileService,
     protected postService: PostService,
+    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {
@@ -64,6 +67,19 @@ export class ProposalUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+    this.accountService.identity().then(account => {
+      this.account = account;
+      const query = {};
+      query['id.equals'] = this.account.id;
+      console.log('CONSOLOG: M:ngOnInit & O: query : ', query);
+      this.profileService.query(query).subscribe(
+        (res: HttpResponse<IProfile[]>) => {
+          this.profile = res.body[0];
+          //            console.log('CONSOLOG: M:ngOnInit & O: this.chatUser : ', this.chatuser);
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+    });
     this.activatedRoute.data.subscribe(({ proposal }) => {
       this.updateForm(proposal);
     });
@@ -84,9 +100,18 @@ export class ProposalUpdateComponent implements OnInit {
   }
 
   updateForm(proposal: IProposal) {
+    const date = moment(moment().format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     this.editForm.patchValue({
       id: proposal.id,
-      creationDate: proposal.creationDate != null ? proposal.creationDate.format(DATE_TIME_FORMAT) : null,
+      //      creationDate: proposal.creationDate != null ? proposal.creationDate.format(DATE_TIME_FORMAT) : null,
+      creationDate:
+        proposal.creationDate != null
+          ? proposal.creationDate.format(DATE_TIME_FORMAT)
+          : JSON.stringify(date)
+              .split(':00.000Z')
+              .join('')
+              .split('"')
+              .join(''),
       proposalName: proposal.proposalName,
       proposalType: proposal.proposalType,
       proposalRole: proposal.proposalRole,

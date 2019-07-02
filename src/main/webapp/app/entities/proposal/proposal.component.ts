@@ -38,6 +38,8 @@ export class ProposalComponent implements OnInit, OnDestroy {
   predicate: any;
   previousPage: any;
   reverse: any;
+  owner: any;
+  isAdmin: boolean;
 
   constructor(
     protected proposalService: ProposalService,
@@ -147,8 +149,8 @@ export class ProposalComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.accountService.identity().then(account => {
       this.currentAccount = account;
-      //      this.owner = account.id;
-      //      this.isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
+      this.owner = this.currentAccount.id;
+      this.isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
       const query = {};
       query['id.equals'] = this.currentAccount.id;
       query['queryParams'] = 1;

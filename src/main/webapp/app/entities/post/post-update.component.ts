@@ -31,9 +31,18 @@ export class PostUpdateComponent implements OnInit {
   }
 
   updateForm(post: IPost) {
+    const date = moment(moment().format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     this.editForm.patchValue({
       id: post.id,
-      creationDate: post.creationDate != null ? post.creationDate.format(DATE_TIME_FORMAT) : null,
+      //      creationDate: post.creationDate != null ? post.creationDate.format(DATE_TIME_FORMAT) : null,
+      creationDate:
+        post.creationDate != null
+          ? post.creationDate.format(DATE_TIME_FORMAT)
+          : JSON.stringify(date)
+              .split(':00.000Z')
+              .join('')
+              .split('"')
+              .join(''),
       postName: post.postName
     });
   }

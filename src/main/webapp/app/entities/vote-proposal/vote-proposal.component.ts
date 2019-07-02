@@ -30,6 +30,9 @@ export class VoteProposalComponent implements OnInit, OnDestroy {
   previousPage: any;
   reverse: any;
 
+  owner: any;
+  isAdmin: boolean;
+
   constructor(
     protected voteProposalService: VoteProposalService,
     protected parseLinks: JhiParseLinks,
@@ -92,9 +95,34 @@ export class VoteProposalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadAll();
+    //    this.loadAll();
     this.accountService.identity().then(account => {
       this.currentAccount = account;
+      this.owner = this.currentAccount.id;
+      this.isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
+      if (!this.accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+        const query = {};
+        query['profileId.equals'] = this.currentAccount.id;
+        query['queryParams'] = 1;
+        //                    console.log( 'CONSOLOG: M:loadAll & O: query2 : ', query2 );
+        this.voteProposalService.query(query).subscribe(
+          (res: HttpResponse<IVoteProposal[]>) => {
+            this.voteProposals = res.body;
+            console.log('CONSOLOG: M:loadAll & O: voteProposals : ', this.voteProposals);
+            //              if (this.voteProposals != null) {
+            //                const arrayVoteProposals = [];
+            //                this.voteProposals.forEach(voteProposal => {
+            //                  console.log('CONSOLOG: M:loadAll & O: arrayVoteProposals : ', arrayVoteProposals);
+            //                  arrayVoteProposals.push(voteProposal.votePoints);
+            //                });
+            //              }
+            //              console.log('CONSOLOG: M:loadAll & O: this.voteProposals : ', this.voteProposals);
+          },
+          (res: HttpErrorResponse) => this.onError(res.message)
+        );
+      } else {
+        this.loadAll();
+      }
     });
     this.registerChangeInVoteProposals();
   }

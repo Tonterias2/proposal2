@@ -42,18 +42,18 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
-                        <!-- <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/vote-proposal', voteProposal.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/vote-proposal', voteProposal.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
-                        </button> -->
+                        </button>
                         <button type="submit"
                                 [routerLink]="['/', 'vote-proposal', { outlets: { popup: voteProposal.id + '/delete'} }]"
                                 replaceUrl="true"
