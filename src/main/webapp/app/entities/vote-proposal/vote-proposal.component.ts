@@ -109,14 +109,6 @@ export class VoteProposalComponent implements OnInit, OnDestroy {
           (res: HttpResponse<IVoteProposal[]>) => {
             this.voteProposals = res.body;
             console.log('CONSOLOG: M:loadAll & O: voteProposals : ', this.voteProposals);
-            //              if (this.voteProposals != null) {
-            //                const arrayVoteProposals = [];
-            //                this.voteProposals.forEach(voteProposal => {
-            //                  console.log('CONSOLOG: M:loadAll & O: arrayVoteProposals : ', arrayVoteProposals);
-            //                  arrayVoteProposals.push(voteProposal.votePoints);
-            //                });
-            //              }
-            //              console.log('CONSOLOG: M:loadAll & O: this.voteProposals : ', this.voteProposals);
           },
           (res: HttpErrorResponse) => this.onError(res.message)
         );

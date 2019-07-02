@@ -28,6 +28,8 @@ export interface IProposal {
   voteProposals?: IVoteProposal[];
   profileId?: number;
   postId?: number;
+  totalVotes?: number;
+  totalUserVotes?: number;
 }
 
 export class Proposal implements IProposal {

@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
-import { IProposal, Proposal } from 'app/shared/model/proposal.model';
+import { IProposal, Proposal, ProposalType, ProposalRole } from 'app/shared/model/proposal.model';
 import { ProposalService } from './proposal.service';
 import { IProfile } from 'app/shared/model/profile.model';
 import { ProfileService } from 'app/entities/profile';
@@ -131,14 +131,11 @@ export class ProposalUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const proposal = this.createFromForm();
-    //    const study = 'STUDY';
     if (proposal.id !== undefined) {
       this.subscribeToSaveResponse(this.proposalService.update(proposal));
     } else {
-      //      proposal.proposalType = study;
-      //      proposal.proposalRole = proposal.proposalRole.USER;
-      //        proposal.proposalRole = ProposalRole.USER;
-      //        proposal.proposalRole = proposalRole.USER;
+      proposal.proposalType = ProposalType.STUDY;
+      proposal.proposalRole = ProposalRole.USER;
       proposal.profileId = this.profile.id;
       proposal.postId = this.valueParamFollows;
       this.subscribeToSaveResponse(this.proposalService.create(proposal));

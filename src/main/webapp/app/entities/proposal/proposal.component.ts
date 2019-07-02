@@ -24,6 +24,7 @@ export class ProposalComponent implements OnInit, OnDestroy {
   currentAccount: any;
   proposals: IProposal[];
   voteProposals: IVoteProposal[];
+  voteProposals2: IVoteProposal[];
   profiles: IProfile[];
   profile: IProfile;
 
@@ -40,6 +41,12 @@ export class ProposalComponent implements OnInit, OnDestroy {
   reverse: any;
   owner: any;
   isAdmin: boolean;
+
+  //  totalProposalVotes: number;
+  totalVotes: number;
+  totalUserVotes: number;
+  //  profileVotes: number;
+  //  userProposalVotes: number;
 
   constructor(
     protected proposalService: ProposalService,
@@ -75,20 +82,27 @@ export class ProposalComponent implements OnInit, OnDestroy {
           this.proposals.forEach(proposal => {
             const query2 = {};
             query2['proposalId.equals'] = proposal.id;
-            query2['queryParams'] = 1;
-            //                    console.log( 'CONSOLOG: M:loadAll & O: query2 : ', query2 );
+            //      console.log('CONSOLOG: M:ngOnInit & O: query2 : ', query2);
             this.voteProposalService.query(query2).subscribe(
               (res2: HttpResponse<IVoteProposal[]>) => {
+                this.voteProposals = [];
                 this.voteProposals = res2.body;
-                console.log('CONSOLOG: M:loadAll & O: voteProposals : ', this.voteProposals);
-                if (this.voteProposals != null) {
-                  const arrayVoteProposals = [];
-                  this.voteProposals.forEach(voteProposal => {
-                    console.log('CONSOLOG: M:loadAll & O: arrayVoteProposals : ', arrayVoteProposals);
-                    arrayVoteProposals.push(voteProposal.votePoints);
-                  });
-                }
-                console.log('CONSOLOG: M:loadAll & O: this.voteProposals : ', this.voteProposals);
+                const totalVotes = {};
+                const totalUserVotes = {};
+                this.voteProposals.forEach(voteProposal => {
+                  totalVotes[voteProposal.proposalId] = totalVotes[voteProposal.proposalId]
+                    ? totalVotes[voteProposal.proposalId] + voteProposal.votePoints
+                    : voteProposal.votePoints;
+                  if (voteProposal.profileId === this.currentAccount.id) {
+                    totalUserVotes[voteProposal.proposalId] = totalUserVotes[voteProposal.proposalId]
+                      ? totalUserVotes[voteProposal.proposalId] + voteProposal.votePoints
+                      : voteProposal.votePoints;
+                  }
+                  console.log('CONSOLOG: M:ngOnInit & O: this.voteProposal : ', voteProposal);
+                });
+                proposal.totalVotes = totalVotes[proposal.id];
+                console.log('CONSOLOG: M:ngOnInit & O: totalUserVotes : ', totalUserVotes);
+                proposal.totalUserVotes = totalUserVotes[proposal.id];
               },
               (res2: HttpErrorResponse) => this.onError(res2.message)
             );

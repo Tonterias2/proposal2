@@ -79,6 +79,7 @@
             <th jhiSortBy="isPaid"><span>Is Paid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="profileId"><span>Profile</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="postId"><span>Post</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th>Votos Totales / Votos Usuario</th>
             <th></th>
             </tr>
             </thead>
@@ -102,6 +103,9 @@
                     <div *ngIf="proposal.postId">
                         <a [routerLink]="['../post', proposal.postId , 'view' ]" >{{proposal.postId}}</a>
                     </div>
+                </td>
+                <td class="text-center">
+                {{proposal.totalVotes ? proposal.totalVotes : 0}} / {{proposal.totalUserVotes ? proposal.totalUserVotes : 0}}
                 </td>
                 <td class="text-right">
                	    <div *ngIf="proposal.proposalType === 'APPROVED'">
