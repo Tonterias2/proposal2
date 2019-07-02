@@ -76,6 +76,7 @@ public class Profile implements Serializable {
     }
 
     public void setAssignedVotesPoints(Long assignedVotesPoints) {
+    	assignedVotesPoints = 100L;
         this.assignedVotesPoints = assignedVotesPoints;
     }
 
