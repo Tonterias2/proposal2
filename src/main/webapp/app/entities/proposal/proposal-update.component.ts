@@ -22,8 +22,14 @@ export class ProposalUpdateComponent implements OnInit {
   isSaving: boolean;
 
   profiles: IProfile[];
+  profile: IProfile;
 
   posts: IPost[];
+
+  account: any;
+  nameParamFollows: any;
+  valueParamFollows: any;
+  userQuery: boolean;
 
   editForm = this.fb.group({
     id: [],
@@ -46,7 +52,15 @@ export class ProposalUpdateComponent implements OnInit {
     protected postService: PostService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.postIdEquals != null) {
+        this.nameParamFollows = 'postId.equals';
+        this.valueParamFollows = params.postIdEquals;
+        this.userQuery = true;
+      }
+    });
+  }
 
   ngOnInit() {
     this.isSaving = false;
@@ -60,13 +74,13 @@ export class ProposalUpdateComponent implements OnInit {
         map((response: HttpResponse<IProfile[]>) => response.body)
       )
       .subscribe((res: IProfile[]) => (this.profiles = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.postService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IPost[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IPost[]>) => response.body)
-      )
-      .subscribe((res: IPost[]) => (this.posts = res), (res: HttpErrorResponse) => this.onError(res.message));
+    //    this.postService
+    //      .query()
+    //      .pipe(
+    //        filter((mayBeOk: HttpResponse<IPost[]>) => mayBeOk.ok),
+    //        map((response: HttpResponse<IPost[]>) => response.body)
+    //      )
+    //      .subscribe((res: IPost[]) => (this.posts = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(proposal: IProposal) {
@@ -92,9 +106,16 @@ export class ProposalUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const proposal = this.createFromForm();
+    //    const study = 'STUDY';
     if (proposal.id !== undefined) {
       this.subscribeToSaveResponse(this.proposalService.update(proposal));
     } else {
+      //      proposal.proposalType = study;
+      //      proposal.proposalRole = proposal.proposalRole.USER;
+      //        proposal.proposalRole = ProposalRole.USER;
+      //        proposal.proposalRole = proposalRole.USER;
+      proposal.profileId = this.profile.id;
+      proposal.postId = this.valueParamFollows;
       this.subscribeToSaveResponse(this.proposalService.create(proposal));
     }
   }
