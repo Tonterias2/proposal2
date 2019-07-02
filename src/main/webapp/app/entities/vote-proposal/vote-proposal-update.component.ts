@@ -13,6 +13,9 @@ import { IProposal } from 'app/shared/model/proposal.model';
 import { ProposalService } from 'app/entities/proposal';
 import { IProfile } from 'app/shared/model/profile.model';
 import { ProfileService } from 'app/entities/profile';
+import { ITEMS_PER_PAGE } from 'app/shared';
+
+import { AccountService } from 'app/core';
 
 @Component({
   selector: 'jhi-vote-proposal-update',
@@ -24,6 +27,26 @@ export class VoteProposalUpdateComponent implements OnInit {
   proposals: IProposal[];
 
   profiles: IProfile[];
+  profile: IProfile;
+
+  error: any;
+  success: any;
+  routeData: any;
+  links: any;
+  totalItems: any;
+  itemsPerPage: any;
+  page: any;
+  predicate: any;
+  previousPage: any;
+  reverse: any;
+  owner: any;
+  isAdmin: boolean;
+
+  currentAccount: any;
+
+  nameParamFollows: any;
+  valueParamFollows: any;
+  userQuery: boolean;
 
   editForm = this.fb.group({
     id: [],
@@ -39,11 +62,37 @@ export class VoteProposalUpdateComponent implements OnInit {
     protected proposalService: ProposalService,
     protected profileService: ProfileService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.proposalIdEquals != null) {
+        this.nameParamFollows = 'proposalId.equals';
+        this.valueParamFollows = params.proposalIdEquals;
+        this.userQuery = true;
+      }
+    });
+  }
 
   ngOnInit() {
     this.isSaving = false;
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+      //        console.log('CONSOLOG: M:ngOnInit & O: account : ', account);
+      //        console.log('CONSOLOG: M:ngOnInit & O: this.currentAccount : ', this.currentAccount);
+      //        this.owner = account.id;
+      this.isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
+      const query = {};
+      query['id.equals'] = this.currentAccount.id;
+      //        console.log('CONSOLOG: M:ngOnInit & O: query : ', query);
+      this.profileService.query(query).subscribe(
+        (res: HttpResponse<IProfile[]>) => {
+          this.profile = res.body[0];
+          console.log('CONSOLOG: M:ngOnInit & O: this.profile : ', this.profile);
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+    });
     this.activatedRoute.data.subscribe(({ voteProposal }) => {
       this.updateForm(voteProposal);
     });
@@ -64,9 +113,18 @@ export class VoteProposalUpdateComponent implements OnInit {
   }
 
   updateForm(voteProposal: IVoteProposal) {
+    const date = moment(moment().format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     this.editForm.patchValue({
       id: voteProposal.id,
-      creationDate: voteProposal.creationDate != null ? voteProposal.creationDate.format(DATE_TIME_FORMAT) : null,
+      //      creationDate: voteProposal.creationDate != null ? voteProposal.creationDate.format(DATE_TIME_FORMAT) : null,
+      creationDate:
+        voteProposal.creationDate != null
+          ? voteProposal.creationDate.format(DATE_TIME_FORMAT)
+          : JSON.stringify(date)
+              .split(':00.000Z')
+              .join('')
+              .split('"')
+              .join(''),
       votePoints: voteProposal.votePoints,
       proposalId: voteProposal.proposalId,
       profileId: voteProposal.profileId
@@ -83,6 +141,8 @@ export class VoteProposalUpdateComponent implements OnInit {
     if (voteProposal.id !== undefined) {
       this.subscribeToSaveResponse(this.voteProposalService.update(voteProposal));
     } else {
+      voteProposal.profileId = this.profile.id;
+      voteProposal.proposalId = this.valueParamFollows;
       this.subscribeToSaveResponse(this.voteProposalService.create(voteProposal));
     }
   }

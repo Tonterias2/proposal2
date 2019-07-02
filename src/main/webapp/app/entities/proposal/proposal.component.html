@@ -105,6 +105,9 @@
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
+                        <a [routerLink]="['/vote-proposal/new']" [queryParams]="{ 'proposalIdEquals': proposal.id }" class="list-group-item list-group-item-action justify-content-between">
+						  <span><i class="icon-notebook g-pos-rel g-top-1 g-mr-8"></i> Vote Proposal</span>
+						</a> 
                         <button type="submit"
                                 [routerLink]="['/proposal', proposal.id, 'view' ]"
                                 class="btn btn-info btn-sm">
